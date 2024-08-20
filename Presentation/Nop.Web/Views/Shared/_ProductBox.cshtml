@@ -25,7 +25,7 @@
     var addtowishlistlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = Model.Id, shoppingCartTypeId = (int)ShoppingCartType.Wishlist, quantity = quantity });
     var addtocomparelink = Url.RouteUrl("AddProductToCompare", new { productId = Model.Id });
 }
-<div class="product-item" data-productid="@Model.Id">
+<div class="product-item border-white border data-productid="@Model.Id">
     <div class="picture">
         @if (Model.PictureModels.Count > 1)
         {
@@ -34,7 +34,7 @@
                     @foreach (var picture in Model.PictureModels)
                     {
                         <a class="swiper-slide" href="@(Url.RouteUrl<Product>(new { SeName = Model.SeName }))" title="@picture.Title">
-                            <img alt="@picture.AlternateText" src="@picture.ImageUrl" title="@picture.Title" />
+                            <img alt="@picture.AlternateText" src="@picture.ImageUrl" title="@picture.Title"/>
                         </a>
                     }
                 </div>
@@ -59,7 +59,7 @@
             </a>
         }
     </div>
-    <div class="details">
+    <div class="details p-4">
         <h2 class="product-title">
             <a href="@(Url.RouteUrl<Product>(new {SeName = Model.SeName }))">@Model.Name</a>
         </h2>

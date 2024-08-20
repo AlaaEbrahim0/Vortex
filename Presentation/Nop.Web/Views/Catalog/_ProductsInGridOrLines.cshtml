@@ -6,13 +6,18 @@
         @Model.WarningMessage
     </div>
 }
+<div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
+  <div class="h-32 rounded-lg bg-gray-200"></div>
+  <div class="h-32 rounded-lg bg-gray-200"></div>
+</div>
 
 @if (Model.Products.Count > 0)
 {
-    <div class="@(Model.ViewMode == "list" ? "product-list" : "product-grid")">
-        <div class="item-grid">
+    <div class="@(Model.ViewMode == "list" ? "product-list" : "product-grid")
+       ">
+        <div class="grid grid-cols-1 md:grid-cols-3 justify-center gap-20">
             @foreach (var product in Model.Products)
-            {
+            {   
                 <div class="item-box">
                     @await Html.PartialAsync("_ProductBox", product)
                 </div>

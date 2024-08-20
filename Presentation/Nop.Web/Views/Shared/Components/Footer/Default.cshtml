@@ -3,143 +3,153 @@
 @using Nop.Core
 @using Nop.Core.Domain.Tax
 @using Nop.Core.Domain.Topics
+@using Nop.Web.Components
 
 @inject IWorkContext workContext
 
-<div class="footer">
-    <div class="footer-upper">
-        <div class="footer-block information">
-            <div class="title">
-                <strong>@T("Footer.Information")</strong>
+<footer class="bg-black">
+    <div class="mx-auto max-w-screen-xl px-4 pb-6 pt-16 sm:px-6 lg:px-8">
+        
+        <div class="mt-16 grid grid-cols-1 gap-4 border-t border-gray-100 pt-16 md:grid-cols-3">
+            <div class="col-span-1 md:col-span-3">
+                @await Component.InvokeAsync(typeof(NewsletterBoxViewComponent))
+
             </div>
-            <ul class="list">
-                @if (Model.SitemapEnabled && Model.DisplaySitemapFooterItem)
-                {
-                    <li><a href="@Url.RouteUrl("Sitemap")">@T("Sitemap")</a></li>
-                }
-                @foreach (var topic in Model.Topics.Where(x => x.IncludeInFooterColumn1).ToList())
-                {
-                    <li><a href="@(Url.RouteUrl<Topic>(new { SeName = topic.SeName }))">@topic.Name</a></li>
-                }
-                @if (Model.DisplayContactUsFooterItem)
-                {
-                    <li><a href="@Url.RouteUrl("ContactUs")">@T("ContactUs")</a></li>
-                }
-            </ul>
-        </div>
-        <div class="footer-block customer-service">
-            <div class="title">
-                <strong>@T("Footer.CustomerService")</strong>
+            <div class="text-center sm:text-left">
+                <p class="text-lg font-medium text-gray-400">@T("Footer.Information")</p>
+
+                <ul class="mt-8 space-y-4 text-sm text-white">
+                    @if (Model.SitemapEnabled && Model.DisplaySitemapFooterItem)
+                    {
+                        <li>
+                            <a class="transition hover:text-gray-700/75"
+                                href="@Url.RouteUrl("Sitemap")">@T("Sitemap")</a>
+                        </li>
+                    }
+                    @foreach (var topic in Model.Topics.Where(x => x.IncludeInFooterColumn1).ToList())
+                    {
+                        <li>
+                            <a class=" transition hover:text-gray-700/75"
+                                href="@(Url.RouteUrl<Topic>(new { SeName = topic.SeName }))">@topic.Name</a>
+                        </li>
+                    }
+                    @if (Model.DisplayContactUsFooterItem)
+                    {
+                        <li>
+                            <a class=" transition hover:text-gray-700/75"
+                                href="@Url.RouteUrl("ContactUs")">@T("ContactUs")</a>
+                        </li>
+                    }
+                </ul>
             </div>
-            <ul class="list">
-                @if (Model.SearchEnabled && Model.DisplayProductSearchFooterItem)
-                {
-                    <li><a href="@Url.RouteUrl("ProductSearch")">@T("Search")</a> </li>
-                }
-                @if (Model.NewsEnabled && Model.DisplayNewsFooterItem)
-                {
-                    <li><a href="@Url.RouteUrl("NewsArchive")">@T("News")</a></li>
-                }
-                @if (Model.BlogEnabled && Model.DisplayBlogFooterItem)
-                {
-                    <li><a href="@Url.RouteUrl("Blog")">@T("Blog")</a></li>
-                }
-                @if (Model.ForumEnabled && Model.DisplayForumsFooterItem)
-                {
-                    <li><a href="@Url.RouteUrl("Boards")">@T("Forum.Forums")</a></li>
-                }
-                @if (Model.RecentlyViewedProductsEnabled && Model.DisplayRecentlyViewedProductsFooterItem)
-                {
-                    <li><a href="@Url.RouteUrl("RecentlyViewedProducts")">@T("Products.RecentlyViewedProducts")</a></li>
-                }
-                @if (Model.CompareProductsEnabled && Model.DisplayCompareProductsFooterItem)
-                {
-                    <li><a href="@Url.RouteUrl("CompareProducts")">@T("Products.Compare.List")</a></li>
-                }
-                @if (Model.NewProductsEnabled && Model.DisplayNewProductsFooterItem)
-                {
-                    <li><a href="@Url.RouteUrl("NewProducts")">@T("Products.NewProducts")</a></li>
-                }
-                @foreach (var topic in Model.Topics.Where(x => x.IncludeInFooterColumn2).ToList())
-                {
-                    <li><a href="@(Url.RouteUrl<Topic>(new { SeName = topic.SeName }))">@topic.Name</a></li>
-                }
-                @if (Model.AllowCustomersToCheckGiftCardBalance)
-                {
-                    <li><a href="@Url.RouteUrl("CheckGiftCardBalance")">@T("CheckGiftCardBalance")</a></li>
-                }
-            </ul>
-        </div>
-        <div class="footer-block my-account">
-            <div class="title">
-                <strong>@T("Footer.MyAccount")</strong>
+
+            <div class="text-center sm:text-left">
+                <p class="text-lg font-medium text-gray-400">@T("Footer.CustomerService")</p>
+
+                <ul class="mt-8 space-y-4 text-sm text-white">
+                    @if (Model.SearchEnabled && Model.DisplayProductSearchFooterItem)
+                    {
+                        <li>
+                            <a class="transition hover:text-gray-700/75"
+                                href="@Url.RouteUrl("ProductSearch")">@T("Search")</a>
+                        </li>
+                    }
+                    @if (Model.NewsEnabled && Model.DisplayNewsFooterItem)
+                    {
+                        <li>
+                            <a class=" transition hover:text-gray-700/75"
+                                href="@Url.RouteUrl("NewsArchive")">@T("News")</a>
+                        </li>
+                    }
+                    @if (Model.BlogEnabled && Model.DisplayBlogFooterItem)
+                    {
+                        <li>
+                            <a class=" transition hover:text-gray-700/75"
+                                href="@Url.RouteUrl("Blog")">@T("Blog")</a>
+                        </li>
+                    }
+                    @foreach (var topic in Model.Topics.Where(x => x.IncludeInFooterColumn2).ToList())
+                    {
+                        <li>
+                            <a class=" transition hover:text-gray-700/75"
+                                href="@(Url.RouteUrl<Topic>(new { SeName = topic.SeName }))">@topic.Name</a>
+                        </li>
+                    }
+                </ul>
             </div>
-            <ul class="list">
-                @if (Model.DisplayCustomerInfoFooterItem)
-                {
-                    <li><a href="@Url.RouteUrl("CustomerInfo")">@T("Account.MyAccount")</a></li>
-                }
-                @if (Model.DisplayCustomerOrdersFooterItem)
-                {
-                    <li><a href="@Url.RouteUrl("CustomerOrders")">@T("Account.CustomerOrders")</a></li>
-                }
-                @if (Model.DisplayCustomerAddressesFooterItem)
-                {
-                    <li><a href="@Url.RouteUrl("CustomerAddresses")">@T("Account.CustomerAddresses")</a></li>
-                }
-                @if (Model.ShoppingCartEnabled && Model.DisplayShoppingCartFooterItem)
-                {
-                    <li><a href="@Url.RouteUrl("ShoppingCart")">@T("ShoppingCart")</a></li>
-                }
-                @if (Model.WishlistEnabled && Model.DisplayWishlistFooterItem)
-                {
-                    <li><a href="@Url.RouteUrl("Wishlist")">@T("Wishlist")</a></li>
-                }
-                @if (Model.AllowCustomersToApplyForVendorAccount && Model.DisplayApplyVendorAccountFooterItem)
-                {
-                    <li><a href="@Url.RouteUrl("ApplyVendorAccount")">@T("Vendors.ApplyAccount")</a></li>
-                }
-                @foreach (var topic in Model.Topics.Where(x => x.IncludeInFooterColumn3).ToList())
-                {
-                    <li><a href="@(Url.RouteUrl<Topic>(new { SeName = topic.SeName }))">@topic.Name</a></li>
-                }
-            </ul>
-        </div>
-        <div class="footer-block follow-us">
-            <div class="social">
-                <div class="title">
-                    <strong>@T("Footer.FollowUs")</strong>
-                </div>
-                @await Component.InvokeAsync(typeof(SocialButtonsViewComponent))
+
+            <div class="text-center sm:text-left">
+                <p class="text-lg font-medium text-gray-400">@T("Footer.MyAccount")</p>
+
+                <ul class="mt-8 space-y-4 text-sm text-white">
+                    @if (Model.DisplayCustomerInfoFooterItem)
+                    {
+                        <li>
+                            <a class=" transition hover:text-gray-700/75"
+                                href="@Url.RouteUrl("CustomerInfo")">@T("Account.MyAccount")</a>
+                        </li>
+                    }
+                    @if (Model.DisplayCustomerOrdersFooterItem)
+                    {
+                        <li>
+                            <a class=" transition hover:text-gray-700/75"
+                                href="@Url.RouteUrl("CustomerOrders")">@T("Account.CustomerOrders")</a>
+                        </li>
+                    }
+                    @if (Model.DisplayCustomerAddressesFooterItem)
+                    {
+                        <li>
+                            <a class=" transition hover:text-gray-700/75"
+                                href="@Url.RouteUrl("CustomerAddresses")">@T("Account.CustomerAddresses")</a>
+                        </li>
+                    }
+                    @foreach (var topic in Model.Topics.Where(x => x.IncludeInFooterColumn3).ToList())
+                    {
+                        <li>
+                            <a class=" transition hover:text-gray-700/75"
+                                href="@(Url.RouteUrl<Topic>(new { SeName = topic.SeName }))">@topic.Name</a>
+                        </li>
+                    }
+                </ul>
             </div>
-            @await Component.InvokeAsync(typeof(NewsletterBoxViewComponent))
+
+            @* <div class="text-center sm:text-left">
+            <p class="text-lg font-medium text-gray-400">@T("Footer.FollowUs")</p>
+
+            <div class="mt-8 space-y-4 text-sm">
+            @await Component.InvokeAsync(typeof(SocialButtonsViewComponent))
+
+            </div>
+            </div> *@
         </div>
-    </div>
-    <div class="footer-lower">
-        <div class="footer-info">
-            <span class="footer-disclaimer">@T("Content.CopyrightNotice", DateTime.Now.Year, Model.StoreName)</span>
-            @if (Model.DisplayTaxShippingInfoFooter)
+        @await Component.InvokeAsync(typeof(SocialButtonsViewComponent));
+
+
+        <div class="border-t border-gray-100 pt-6 sm:flex sm:items-center sm:justify-between">
+            <p class="text-center text-sm text-gray-500 sm:text-left">
+                @T("Content.CopyrightNotice", DateTime.Now.Year, Model.StoreName)
+            </p>
+
+            @if (!Model.HidePoweredByNopCommerce)
             {
-                var inclTax = await workContext.GetTaxDisplayTypeAsync() == TaxDisplayType.IncludingTax;
-                <span class="footer-tax-shipping">
-                    @T(inclTax ? "Footer.TaxShipping.InclTax" : "Footer.TaxShipping.ExclTax", Url.RouteTopicUrl("shippinginfo"))
-                </span>
+                <p class="mt-4 text-center text-sm text-gray-500 sm:mt-0 sm:text-right">
+                    Powered by <a href="@(OfficialSite.Main)" target="_blank" @(Model.IsHomePage ? string.Empty :
+                    "rel=nofollow") class="text-teal-600 hover:text-teal-600/75">nopCommerce</a>
+                </p>
             }
         </div>
-        @if (!Model.HidePoweredByNopCommerce)
-        {
-            <div class="footer-powered-by">
-                @*Would you like to remove the "Powered by nopCommerce" link in the bottom of the footer?
-                    Please find more info at https://www.nopcommerce.com/nopcommerce-copyright-removal-key*@
-                Powered by <a href="@(OfficialSite.Main)" target="_blank" @(Model.IsHomePage ? string.Empty : "rel=nofollow")>nopCommerce</a>
-            </div>
-        }
-        @await Component.InvokeAsync(typeof(StoreThemeSelectorViewComponent))
     </div>
-    @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.Footer, additionalData = Model })
-</div>
+
+
+    @await Component.InvokeAsync(typeof(WidgetViewComponent), new
+        {
+            widgetZone = PublicWidgetZones.Footer,
+            additionalData = Model
+        })
+</footer>
+
 <script asp-location="Footer">
-    $(function() {
+    $(function () {
         $('.footer-block .title').on('click', function () {
             var e = window, a = 'inner';
             if (!('innerWidth' in window)) {
@@ -154,7 +164,7 @@
     });
 </script>
 <script asp-location="Footer">
-    $(function() {
+    $(function () {
         $('.block .title').on('click', function () {
             var e = window, a = 'inner';
             if (!('innerWidth' in window)) {

@@ -434,7 +434,6 @@ public partial class CatalogController : BasePublicController
             .ToList();
         return Json(result);
     }
-
     //ignore SEO friendly URLs checks
     [CheckLanguageSeoCode(ignore: true)]
     public virtual async Task<IActionResult> SearchProducts(SearchModel searchModel, CatalogProductsCommand command)

@@ -1,3 +1,120 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Bebas+Neue&family=New+Amsterdam&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+
+@layer components {
+    /* Existing styles */
+    .vortex-button-1 {
+        @apply uppercase font-barlow bg-black border-2 border-[#3e3e3e] rounded-none text-white px-6 py-3 text-base hover:border-[#fff] cursor-pointer transition;
+    }
+    .vortex-button-2 {
+        @apply uppercase font-barlow bg-black border-2 border-violet-700 rounded-none text-white px-6 py-3 text-base hover:border-[#fff] cursor-pointer transition;
+    }
+    .vortex-input {
+        @apply font-barlow block w-full px-4 py-2 text-gray-700 border rounded-none bg-black dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300;
+    }
+    .vortex-font-1 {
+        @apply font-bebas;
+    }
+    .vortex-font-2 {
+        @apply font-barlow;
+    }
+    .vortex-font-3 {
+        @apply font-playfair;
+    }
+    .vortex-font-4 {
+        @apply font-newamsterdam;
+    }
+    .vortex-heading-1 {
+        @apply uppercase font-bebas text-4xl font-semibold text-white lg:text-7xl;
+    }
+
+    /* Custom form element styles */
+    .vortex-select,
+    .vortex-textarea,
+    .vortex-checkbox,
+    .vortex-radio {
+        @apply font-barlow block w-full px-4 py-2 text-white border rounded-none bg-black  dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300;
+    }
+
+    .vortex-select {
+        @apply text-gray-700 bg-black;
+    }
+
+    .vortex-select:focus {
+        @apply border-violet-700;
+    }
+
+    .vortex-select:active,
+    .vortex-select:focus-within,
+    .vortex-select:focus-visible {
+        @apply text-white;
+    }
+
+    .vortex-textarea {
+        @apply text-gray-700 bg-black dark:text-gray-300 dark:border-gray-600;
+    }
+
+    .vortex-checkbox,
+    .vortex-radio {
+        @apply text-violet-600 focus:ring-blue-300 dark:focus:ring-blue-300;
+    }
+
+    /* Gradient Border Animation */
+    @keyframes gradient-border {
+        0% {
+            border-image-source: linear-gradient(
+                to bottom,
+                darkviolet,
+                rgba(0, 0, 0, 0)
+            );
+        }
+        50% {
+            border-image-source: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0),
+                darkviolet
+            );
+        }
+        100% {
+            border-image-source: linear-gradient(
+                to bottom,
+                darkviolet,
+                rgba(0, 0, 0, 0)
+            );
+        }
+    }
+
+    /* Spin and Fade-In Animation for Logo */
+    @keyframes fadeInSpin {
+        0% {
+            opacity: 0;
+            transform: rotate(0deg);
+        }
+        100% {
+            opacity: 1;
+            transform: rotate(360deg);
+        }
+    }
+
+    .animate-fade-in-spin {
+        @apply animate-[fadeInSpin_1s_ease-in-out];
+    }
+
+    /* Additional Pulsing Animation */
+    @keyframes pulse {
+        0%,
+        100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+    }
+
+    .animate-pulse {
+        @apply animate-[pulse_2s_infinite];
+    }
+}

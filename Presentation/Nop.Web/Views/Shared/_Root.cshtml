@@ -4,7 +4,7 @@
 @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.BodyStartHtmlTagAfter })
 @{ await Html.RenderPartialAsync("_Notifications"); }
 @{ await Html.RenderPartialAsync("_JavaScriptDisabledWarning"); }
-<div class="master-wrapper-page">
+<div class="master-wrapper-page bg-black overflow-x-hidden min-h-screen">
     @await Component.InvokeAsync(typeof(AdminHeaderLinksViewComponent))
     @{ await Html.RenderPartialAsync("_Header"); }
     <script asp-location="Footer">
@@ -13,20 +13,21 @@
         };
         AjaxCart.init(false, '.header-links .cart-qty', '.header-links .wishlist-qty', '#flyout-cart', localized_data);
     </script>
-    <div class="header-menu">
-        @await Component.InvokeAsync(typeof(TopMenuViewComponent))
-    </div>
-    <div class="master-wrapper-content" id="main" role="main">
+@*      <div class="header-menu">
+         @await Component.InvokeAsync(typeof(TopMenuViewComponent))
+     </div>
+ *@    <div class="" id="main" role="main">
         @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.ContentBefore })
 
         @if (IsSectionDefined("Breadcrumb"))
         {
             @RenderSection("Breadcrumb") 
         }
-        <div class="master-column-wrapper">
+        <div class="master-column-wrapper bg-black text-white overflow-x-hidden">
+			
             @RenderBody()
         </div>
-        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.ContentAfter })
+        @* @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.ContentAfter }) *@
     </div>
     @await Component.InvokeAsync(typeof(FooterViewComponent))
 </div>

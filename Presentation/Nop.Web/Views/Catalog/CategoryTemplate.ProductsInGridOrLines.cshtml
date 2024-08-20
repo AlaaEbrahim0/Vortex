@@ -32,48 +32,53 @@
 {
     @if (Model.DisplayCategoryBreadcrumb)
     {
-        <div class="breadcrumb">
-            <ul>
+        <nav aria-label="Breadcrumb">
+            <ol class="flex items-center justify-center gap-1 text-sm text-gray-600 dark:text-gray-300">
                 <li>
-                    <a href="@Url.RouteUrl("Homepage")" title="@T("Categories.Breadcrumb.Top")">@T("Categories.Breadcrumb.Top")</a>
-                    <span class="delimiter">@breadcrumbDelimiter</span>
+                    <a href="@Url.RouteUrl("Homepage")" class="block transition hover:text-gray-700 dark:hover:text-gray-200" title="@T("Categories.Breadcrumb.Top")">
+                        <span class="sr-only">@T("Categories.Breadcrumb.Top")</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                    </a>
                 </li>
                 @{ int position = 1; }
                 @foreach (var cat in Model.CategoryBreadcrumb)
                 {
                     var isLastCategory = cat.Id == Model.Id;
-                    <li>
+                    <li class="flex items-center gap-1">
                         @if (isLastCategory)
                         {
                             <strong class="current-item">@cat.Name</strong>
-                            <span id="@(Url.RouteUrl<Category>(new { SeName = cat.SeName }))"></span>
                         }
                         else
                         {
-                            <a href="@(Url.RouteUrl<Category>(new { SeName = cat.SeName }))" title="@cat.Name">
+                            <a href="@(Url.RouteUrl<Category>(new { SeName = cat.SeName }))" class="block transition hover:text-gray-700 dark:hover:text-gray-200" title="@cat.Name">
                                 <span>@cat.Name</span>
                             </a>
-                            <span class="delimiter">@breadcrumbDelimiter</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="size-4 rtl:rotate-180" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            </svg>
                         }
                     </li>
                     position++;
                 }
-            </ul>
+            </ol>
             @if (seoSettings.MicrodataEnabled)
             {
                 <script type="application/ld+json">
                     @Html.Raw(Model.JsonLd)
                 </script>
             }
-        </div>
+        </nav>
         @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.CategoryDetailsAfterBreadcrumb, additionalData = Model })
     }
 }
 
-@section CatalogFilters {
-    @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.CategoryDetailsBeforeFilters, additionalData = Model })
-    @await Html.PartialAsync("_CatalogFilters", Model.CatalogProductsModel)
-}
+<!-- @section CatalogFilters { -->
+    <!-- @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.CategoryDetailsBeforeFilters, additionalData = Model }) -->
+    <!-- @await Html.PartialAsync("_CatalogFilters", Model.CatalogProductsModel) -->
+<!-- } -->
 
 <div class="page category-page">
     <div class="page-title">

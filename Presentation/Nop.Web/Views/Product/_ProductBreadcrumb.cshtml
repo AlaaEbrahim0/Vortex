@@ -8,41 +8,71 @@
 @inject SeoSettings seoSettings
 
 @{
-    var breadcrumbDelimiter = commonSettings.BreadcrumbDelimiter;
+    var breadcrumbDelimiter = commonSettings.BreadcrumbDelimiter; // Not used anymore
 }
 @if (Model.Enabled)
 {
-    <div class="breadcrumb">
-        <ul>
-            @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.ProductBreadcrumbBefore, additionalData = Model })
+    <nav aria-label="Breadcrumb">
+        <ol class="flex items-center gap-1 text-sm text-gray-600">
+            @await Component.InvokeAsync(typeof(WidgetViewComponent), new
+                {
+                    widgetZone =
+                     PublicWidgetZones.ProductBreadcrumbBefore,
+                    additionalData = Model
+                })
+
             <li>
-                <span>
-                    <a href="@Url.RouteUrl("Homepage")">
-                        <span>@T("Products.Breadcrumb.Top")</span>
-                    </a>
-                </span>
-                <span class="delimiter">@breadcrumbDelimiter</span>
-            </li>            
+                <a href="@Url.RouteUrl("Homepage")" class="block transition hover:text-gray-700">
+                    <span class="sr-only">@T("Products.Breadcrumb.Top")</span>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                </a>
+            </li>
+
             @foreach (var category in Model.CategoryBreadcrumb)
             {
-                <li>
-                    <a href="@(Url.RouteUrl<Category>(new { SeName = category.SeName }))">
+                <li class="rtl:rotate-180">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+
+                    <a href="@(Url.RouteUrl<Category>(new { SeName = category.SeName }))"
+                        class="block transition hover:text-gray-700">
                         <span>@category.Name</span>
                     </a>
-                    <span class="delimiter">@breadcrumbDelimiter</span>
                 </li>
             }
-            <li>
+
+            <li class="rtl:rotate-180">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                        clip-rule="evenodd" />
+                </svg>
+
                 <strong class="current-item">@Model.ProductName</strong>
-                <span id="@(Url.RouteUrl<Product>(new { SeName = Model.ProductSeName }))"></span>              
-                @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.ProductBreadcrumbAfter, additionalData = Model })
+                <span id="@(Url.RouteUrl<Product>(new { SeName = Model.ProductSeName }))"></span>
             </li>
-        </ul>
+
+            @await Component.InvokeAsync(typeof(WidgetViewComponent), new
+                {
+                    widgetZone =
+                     PublicWidgetZones.ProductBreadcrumbAfter,
+                    additionalData = Model
+                })
+        </ol>
+
         @if (seoSettings.MicrodataEnabled)
         {
             <script type="application/ld+json">
                 @Html.Raw(Model.JsonLd)
-            </script>
+                            </script>
         }
-    </div>
+    </nav>
 }
