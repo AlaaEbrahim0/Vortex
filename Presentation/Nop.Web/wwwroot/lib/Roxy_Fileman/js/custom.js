@@ -1,4 +1,4 @@
-/*
+/*mD:\nopCommerce_4.70.4_Source\src\Presentation\Nop.Web\Nop.Web.csprojl
   RoxyFileman - web based file manager. Ready to use with CKEditor, TinyMCE. 
   Can be easily integrated with any other WYSIWYG editor or CMS.
 

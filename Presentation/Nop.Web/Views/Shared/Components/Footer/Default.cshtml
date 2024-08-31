@@ -9,7 +9,7 @@
 
 <footer class="bg-black">
     <div class="mx-auto max-w-screen-xl px-4 pb-6 pt-16 sm:px-6 lg:px-8">
-        
+
         <div class="mt-16 grid grid-cols-1 gap-4 border-t border-gray-100 pt-16 md:grid-cols-3">
             <div class="col-span-1 md:col-span-3">
                 @await Component.InvokeAsync(typeof(NewsletterBoxViewComponent))
@@ -22,8 +22,7 @@
                     @if (Model.SitemapEnabled && Model.DisplaySitemapFooterItem)
                     {
                         <li>
-                            <a class="transition hover:text-gray-700/75"
-                                href="@Url.RouteUrl("Sitemap")">@T("Sitemap")</a>
+                            <a class="transition hover:text-gray-700/75" href="@Url.RouteUrl("Sitemap")">@T("Sitemap")</a>
                         </li>
                     }
                     @foreach (var topic in Model.Topics.Where(x => x.IncludeInFooterColumn1).ToList())
@@ -57,15 +56,13 @@
                     @if (Model.NewsEnabled && Model.DisplayNewsFooterItem)
                     {
                         <li>
-                            <a class=" transition hover:text-gray-700/75"
-                                href="@Url.RouteUrl("NewsArchive")">@T("News")</a>
+                            <a class=" transition hover:text-gray-700/75" href="@Url.RouteUrl("NewsArchive")">@T("News")</a>
                         </li>
                     }
                     @if (Model.BlogEnabled && Model.DisplayBlogFooterItem)
                     {
                         <li>
-                            <a class=" transition hover:text-gray-700/75"
-                                href="@Url.RouteUrl("Blog")">@T("Blog")</a>
+                            <a class=" transition hover:text-gray-700/75" href="@Url.RouteUrl("Blog")">@T("Blog")</a>
                         </li>
                     }
                     @foreach (var topic in Model.Topics.Where(x => x.IncludeInFooterColumn2).ToList())

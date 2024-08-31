@@ -8,7 +8,7 @@
     NopHtml.AppendPageCssClassParts("html-search-page");
 }
 <script asp-location="Footer">
-    $(function() {
+    $(function () {
         $("#@Html.IdFor(model => model.advs)").on('click', toggleAdvancedSearch);
         toggleAdvancedSearch();
     });
@@ -39,9 +39,14 @@
                         <div class="basic-search">
                             <div class="inputs">
                                 <label asp-for="q">@T("Search.SearchTerm"):</label>
-                                <input asp-for="q" class="search-text" />
+                                <input asp-for="q" class="search-text vortex-input" />
                             </div>
-                            @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.ProductSearchPageBasic, additionalData = Model })
+                            @await Component.InvokeAsync(typeof(WidgetViewComponent), new
+                                {
+                                    widgetZone =
+                                     PublicWidgetZones.ProductSearchPageBasic,
+                                    additionalData = Model
+                                })
                             <div class="inputs reversed">
                                 <input asp-for="advs" />
                                 <label asp-for="advs">@T("Search.AdvancedSearch")</label>
@@ -77,17 +82,27 @@
                                 <input asp-for="sid" />
                                 <label asp-for="sid">@T("Search.SearchInDescriptions")</label>
                             </div>
-                            @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.ProductSearchPageAdvanced, additionalData = Model })
+                            @await Component.InvokeAsync(typeof(WidgetViewComponent), new
+                                {
+                                    widgetZone =
+                                     PublicWidgetZones.ProductSearchPageAdvanced,
+                                    additionalData = Model
+                                })
                         </div>
                     </div>
                 </div>
                 <div class="buttons">
-                    <button type="submit" class="button-1 search-button">@T("Search.Button")</button>
+                    <button type="submit" class="vortex-button-1 search-button">@T("Search.Button")</button>
                 </div>
             </form>
         </div>
         @await Html.PartialAsync("_CatalogSelectors", Model.CatalogProductsModel)
-        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.ProductSearchPageBeforeResults, additionalData = Model })
+        @await Component.InvokeAsync(typeof(WidgetViewComponent), new
+            {
+                widgetZone =
+                 PublicWidgetZones.ProductSearchPageBeforeResults,
+                additionalData = Model
+            })
         <div class="search-results">
             @{
                 var catalogProductsViewData = new ViewDataDictionary(ViewData);
@@ -95,7 +110,7 @@
             }
             @await Html.PartialAsync("_CatalogProducts", Model.CatalogProductsModel, catalogProductsViewData)
             <script asp-location="Footer">
-                $(function() {
+                $(function () {
                     $(CatalogProducts).on('before', function (e) {
                         var isAdvanced = $('#@Html.IdFor(model => model.advs)').is(':checked');
 
@@ -115,6 +130,11 @@
                 });
             </script>
         </div>
-        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.ProductSearchPageAfterResults, additionalData = Model })
+        @await Component.InvokeAsync(typeof(WidgetViewComponent), new
+            {
+                widgetZone =
+                 PublicWidgetZones.ProductSearchPageAfterResults,
+                additionalData = Model
+            })
     </div>
 </div>

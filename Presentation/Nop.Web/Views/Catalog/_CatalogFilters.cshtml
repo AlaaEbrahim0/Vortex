@@ -1,31 +1,31 @@
 ﻿@model CatalogProductsModel
 
 @if (!Model.PriceRangeFilter.Enabled &&
-     !Model.SpecificationFilter.Enabled &&
-     !Model.ManufacturerFilter.Enabled)
+!Model.SpecificationFilter.Enabled &&
+!Model.ManufacturerFilter.Enabled)
 {
     return;
 }
 
+@if (Model.PriceRangeFilter.Enabled)
+{
+    @await Html.PartialAsync("_FilterPriceBox", Model.PriceRangeFilter)
+}
 <div class="block product-filters">
-    @if (Model.PriceRangeFilter.Enabled)
-    {
-        @await Html.PartialAsync("_FilterPriceBox", Model.PriceRangeFilter)
-    }
 
     @if (Model.SpecificationFilter.Enabled)
     {
         @await Html.PartialAsync("_FilterSpecsBox", Model.SpecificationFilter)
     }
 
-    @if (Model.ManufacturerFilter.Enabled)
+    @* @if (Model.ManufacturerFilter.Enabled)
     {
-        @await Html.PartialAsync("_FilterManufacturerBox", Model.ManufacturerFilter)
-    }
+    @await Html.PartialAsync("_FilterManufacturerBox", Model.ManufacturerFilter)
+    } *@
 </div>
 
 <script asp-location="Footer">
-    $(function() {
+    $(function () {
         $('.block .filter-title').on('click', function () {
             var e = window, a = 'inner';
             if (!('innerWidth' in window)) {

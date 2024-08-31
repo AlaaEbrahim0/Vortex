@@ -1,150 +1,201 @@
-﻿@model CategoryModel
+﻿    @model CategoryModel
 
-@using Nop.Core.Domain.Catalog
-@using Nop.Core.Domain.Common
-@using Nop.Core.Domain.Seo
+    @using Nop.Core.Domain.Catalog
+    @using Nop.Core.Domain.Common
+    @using Nop.Core.Domain.Seo
 
-@inject Nop.Core.IWebHelper webHelper
-@inject SeoSettings seoSettings
-@inject CommonSettings commonSettings
+    @inject Nop.Core.IWebHelper webHelper
+    @inject SeoSettings seoSettings
+    @inject CommonSettings commonSettings
 
-@{
-    Layout = "_ColumnsTwo";
+    @{
+        Layout = "_ColumnsTwo";
 
-    //title
-    NopHtml.AddTitleParts(!string.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
-    //meta
-    NopHtml.AddMetaDescriptionParts(Model.MetaDescription);
-    NopHtml.AddMetaKeywordParts(Model.MetaKeywords);
-    //page class
-    NopHtml.AppendPageCssClassParts("html-category-page");
+        //title
+        NopHtml.AddTitleParts(!string.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
+        //meta
+        NopHtml.AddMetaDescriptionParts(Model.MetaDescription); 
+        NopHtml.AddMetaKeywordParts(Model.MetaKeywords);
+        //page class
+        NopHtml.AppendPageCssClassParts("html-category-page");
 
-    if (seoSettings.CanonicalUrlsEnabled)
-    {
-        var categoryUrl = Url.RouteUrl<Category>(new { SeName = Model.SeName }, webHelper.GetCurrentRequestProtocol()).ToLowerInvariant();
-        NopHtml.AddCanonicalUrlParts(categoryUrl, seoSettings.QueryStringInCanonicalUrlsEnabled);
-    }
-
-    var breadcrumbDelimiter = commonSettings.BreadcrumbDelimiter;
-}
-@*category breadcrumb*@
-@section Breadcrumb
-{
-    @if (Model.DisplayCategoryBreadcrumb)
-    {
-        <nav aria-label="Breadcrumb">
-            <ol class="flex items-center justify-center gap-1 text-sm text-gray-600 dark:text-gray-300">
-                <li>
-                    <a href="@Url.RouteUrl("Homepage")" class="block transition hover:text-gray-700 dark:hover:text-gray-200" title="@T("Categories.Breadcrumb.Top")">
-                        <span class="sr-only">@T("Categories.Breadcrumb.Top")</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                        </svg>
-                    </a>
-                </li>
-                @{ int position = 1; }
-                @foreach (var cat in Model.CategoryBreadcrumb)
-                {
-                    var isLastCategory = cat.Id == Model.Id;
-                    <li class="flex items-center gap-1">
-                        @if (isLastCategory)
-                        {
-                            <strong class="current-item">@cat.Name</strong>
-                        }
-                        else
-                        {
-                            <a href="@(Url.RouteUrl<Category>(new { SeName = cat.SeName }))" class="block transition hover:text-gray-700 dark:hover:text-gray-200" title="@cat.Name">
-                                <span>@cat.Name</span>
-                            </a>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="size-4 rtl:rotate-180" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                            </svg>
-                        }
-                    </li>
-                    position++;
-                }
-            </ol>
-            @if (seoSettings.MicrodataEnabled)
-            {
-                <script type="application/ld+json">
-                    @Html.Raw(Model.JsonLd)
-                </script>
-            }
-        </nav>
-        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.CategoryDetailsAfterBreadcrumb, additionalData = Model })
-    }
-}
-
-<!-- @section CatalogFilters { -->
-    <!-- @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.CategoryDetailsBeforeFilters, additionalData = Model }) -->
-    <!-- @await Html.PartialAsync("_CatalogFilters", Model.CatalogProductsModel) -->
-<!-- } -->
-
-<div class="page category-page">
-    <div class="page-title">
-        <h1>@Model.Name</h1>
-    </div>
-    <div class="page-body">
-        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.CategoryDetailsTop, additionalData = Model })
-        @*description*@
-        @if (!string.IsNullOrWhiteSpace(Model.Description))
+        if (seoSettings.CanonicalUrlsEnabled)
         {
-            <div class="category-description">
-                @Html.Raw(Model.Description)
-            </div>
+            var categoryUrl = Url.RouteUrl<Category>(new { SeName = Model.SeName },
+            webHelper.GetCurrentRequestProtocol()).ToLowerInvariant();
+            NopHtml.AddCanonicalUrlParts(categoryUrl, seoSettings.QueryStringInCanonicalUrlsEnabled);
         }
-        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.CategoryDetailsBeforeSubcategories, additionalData = Model })
-        @*subcategories*@
-        @if (Model.SubCategories.Count > 0)
+
+        var breadcrumbDelimiter = commonSettings.BreadcrumbDelimiter;
+    }
+    @*category breadcrumb*@
+    @section Breadcrumb
+    {
+        @if (Model.DisplayCategoryBreadcrumb)
         {
-            <div class="category-grid sub-category-grid">
-                <div class="item-grid">
-                    @foreach (var item in Model.SubCategories)
+            <nav aria-label="Breadcrumb">
+                <ol class="pt-16 flex items-center justify-center gap-1 text-sm text-gray-600 dark:text-gray-300">
+                    <li>
+                        <a href="@Url.RouteUrl("Homepage")" class="block transition hover:text-gray-700 dark:hover:text-gray-200"
+                            title="@T("Categories.Breadcrumb.Top")">
+                            <span class="sr-only">@T("Categories.Breadcrumb.Top")</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                        </a>
+                    </li>
+                    @{
+                        int position = 1;
+                    }
+                    @foreach (var cat in Model.CategoryBreadcrumb)
                     {
-                        <div class="item-box">
-                            <div class="sub-category-item">
-                                <h2 class="title">
-                                    <a href="@(Url.RouteUrl<Category>(new { SeName = item.SeName }))" title="@item.PictureModel.Title">
-                                        @item.Name
-                                    </a>
-                                </h2>
-                                <div class="picture">
-                                    <a href="@(Url.RouteUrl<Category>(new { SeName = item.SeName }))" title="@item.PictureModel.Title">
-                                        <img alt="@item.PictureModel.AlternateText" src="@item.PictureModel.ImageUrl" title="@item.PictureModel.Title" />
-                                    </a>
-                                </div>
+                        var isLastCategory = cat.Id == Model.Id;
+                        <li class="flex items-center gap-1">
+                            @if (isLastCategory)
+                            {
+                                <strong class="current-item">@cat.Name</strong>
+                            }
+                            else
+                            {
+                                <a href="@(Url.RouteUrl<Category>(new { SeName = cat.SeName }))"
+                                    class="block transition hover:text-gray-700 dark:hover:text-gray-200" title="@cat.Name">
+                                    <span>@cat.Name</span>
+                                </a>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="size-4 rtl:rotate-180" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            }
+                        </li>
+                        position++;
+                    }
+                </ol>
+                @if (seoSettings.MicrodataEnabled)
+                {
+                    <script type="application/ld+json">
+                        @Html.Raw(Model.JsonLd)
+                                                                                                                                                                                                                                            </script>
+                }
+            </nav>
+            @await Component.InvokeAsync(typeof(WidgetViewComponent), new
+                {
+                    widgetZone =
+                PublicWidgetZones.CategoryDetailsAfterBreadcrumb,
+                    additionalData = Model
+                })
+        }
+    }
+
+
+    @section CatalogFilters {
+        @await Component.InvokeAsync(typeof(WidgetViewComponent), new
+            {
+                widgetZone =
+            PublicWidgetZones.CategoryDetailsBeforeFilters,
+                additionalData = Model
+            })
+        @await Html.PartialAsync("_CatalogFilters", Model.CatalogProductsModel)
+    }
+
+
+
+    @await Component.InvokeAsync(typeof(WidgetViewComponent), new
+        {
+            widgetZone =
+        PublicWidgetZones.CategoryDetailsTop,
+            additionalData = Model
+        })
+    @*description*@
+    @if (!string.IsNullOrWhiteSpace(Model.Description))
+    {
+
+        <div class="category-description">
+            @Html.Raw(Model.Description)
+        </div>
+    }
+    @await Component.InvokeAsync(typeof(WidgetViewComponent), new
+        {
+            widgetZone =
+        PublicWidgetZones.CategoryDetailsBeforeSubcategories,
+            additionalData = Model
+        })
+    @*subcategories*@
+    @if (Model.SubCategories.Count > 0)
+    {
+        <div class="category-grid sub-category-grid">
+            <div class="item-grid">
+                @foreach (var item in Model.SubCategories)
+                {
+                    <div class="item-box">
+                        <div class="sub-category-item">
+                            <h2 class="title">
+                                <a href="@(Url.RouteUrl<Category>(new { SeName = item.SeName }))" title="@item.PictureModel.Title">
+                                    @item.Name
+                                </a>
+                            </h2>
+                            <div class="picture">
+                                <a href="@(Url.RouteUrl<Category>(new { SeName = item.SeName }))" title="@item.PictureModel.Title">
+                                    <img alt="@item.PictureModel.AlternateText" src="@item.PictureModel.ImageUrl"
+                                        title="@item.PictureModel.Title" />
+                                </a>
                             </div>
                         </div>
-                    }
-                </div>
+                    </div>
+                }
             </div>
-        }
-        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.CategoryDetailsBeforeFeaturedProducts, additionalData = Model })
-        @*featured products*@
-        @if (Model.FeaturedProducts.Count > 0)
+        </div>
+    }
+    @await Component.InvokeAsync(typeof(WidgetViewComponent), new
         {
-            <div class="product-grid featured-product-grid">
-                <div class="title">
-                    <strong>@T("Products.FeaturedProducts")</strong>
-                </div>
-                <div class="item-grid">
-                    @foreach (var item in Model.FeaturedProducts)
-                    {
-                        <div class="item-box">
-                            @await Html.PartialAsync("_ProductBox", item)
-                        </div>
-                    }
-                </div>
+            widgetZone =
+        PublicWidgetZones.CategoryDetailsBeforeFeaturedProducts,
+            additionalData = Model
+        })
+    @*featured products*@
+    @if (Model.FeaturedProducts.Count > 0)
+    {
+        <div class="product-grid featured-product-grid">
+            <div class="title">
+                <strong>@T("Products.FeaturedProducts")</strong>
             </div>
-        }
-        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.CategoryDetailsAfterFeaturedProducts, additionalData = Model })
-        @await Html.PartialAsync("_CatalogSelectors", Model.CatalogProductsModel)
-        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.CategoryDetailsBeforeProductList, additionalData = Model })
-        @{
-            var catalogProductsViewData = new ViewDataDictionary(ViewData);
-            catalogProductsViewData["fetchUrl"] = Html.Raw(Url.RouteUrl("GetCategoryProducts", new { categoryId = Model.Id }));
-        }
-        @await Html.PartialAsync("_CatalogProducts", Model.CatalogProductsModel, catalogProductsViewData)
-        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.CategoryDetailsBottom, additionalData = Model })
-    </div>
-</div>
+            <div class="item-grid">
+                @foreach (var item in Model.FeaturedProducts)
+                {
+                    <div class="item-box">
+                        @await Html.PartialAsync("_ProductBox", item)
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    @await Component.InvokeAsync(typeof(WidgetViewComponent), new
+        {
+            widgetZone =
+        PublicWidgetZones.CategoryDetailsAfterFeaturedProducts,
+            additionalData = Model
+        })
+    @* @await Html.PartialAsync("_CatalogSelectors", Model.CatalogProductsModel) *@
+    @await Component.InvokeAsync(typeof(WidgetViewComponent), new
+        {
+            widgetZone =
+        PublicWidgetZones.CategoryDetailsBeforeProductList,
+            additionalData = Model
+        })
+    @{
+        var catalogProductsViewData = new ViewDataDictionary(ViewData);
+        catalogProductsViewData["fetchUrl"] = Html.Raw(Url.RouteUrl("GetCategoryProducts", new
+        {
+            categoryId = Model.Id
+        }));
+    }
+    @await Html.PartialAsync("_CatalogProducts", Model.CatalogProductsModel, catalogProductsViewData)
+    @await Component.InvokeAsync(typeof(WidgetViewComponent), new
+        {
+            widgetZone =
+        PublicWidgetZones.CategoryDetailsBottom,
+            additionalData = Model
+        })

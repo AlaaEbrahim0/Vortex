@@ -31,7 +31,14 @@
 <div class="drawer font-bebas ">
   <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
   <div class="drawer-content flex flex-col">
-    <div class="navbar fixed z-40 top-0 left-0 w-full px-6 py-6 text-white bg-transparent">
+    <div class="navbar fixed z-40 top-0 left-0 w-full px-6 py-6 text-white bg-transparent bg-black"
+      style="
+      background: rgba(0, 0, 0, 0.21);
+
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(3px);
+-webkit-backdrop-filter: blur(3px);
+      box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, #712cb2 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
       <div class="flex-none lg:hidden">
         <label for="my-drawer-3" aria-label="open sidebar" class="btn btn-square btn-ghost">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -42,6 +49,8 @@
       </div>
       <div class="flex-1 mx-2 px-2 ">
         @await Component.InvokeAsync(typeof(LogoViewComponent))
+        @await Component.InvokeAsync(typeof(LanguageSelectorViewComponent))
+
       </div>
       <div class="block">
         <ul class="menu menu-horizontal text-sm md:text-lg">

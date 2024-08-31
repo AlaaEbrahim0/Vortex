@@ -4,12 +4,10 @@
 
 <div class="products-container">
     <div class="ajax-products-busy"></div>
-    <div class="products-wrapper p-16">
-        @await Html.PartialAsync("_ProductsInGridOrLines", Model)
-    </div>
+    @await Html.PartialAsync("_ProductsInGridOrLines", Model)
 </div>
 <script asp-location="Footer">
-    $(function() {
+    $(function () {
         CatalogProducts.init({
             ajax: @Model.UseAjaxLoading.ToString().ToLowerInvariant(),
             browserPath: '@Context.Request.Path',

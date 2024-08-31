@@ -3,87 +3,94 @@
 @using Nop.Core.Domain.Catalog
 
 @functions {
-    bool BreadCrumbContainsCurrentCategoryId(CategorySimpleModel category)
+  bool BreadCrumbContainsCurrentCategoryId(CategorySimpleModel category)
+  {
+    if (Model.CurrentCategoryId == 0)
+      return false;
+
+    if (category.Id == Model.CurrentCategoryId)
+      return true;
+
+    foreach (var subCategory in category.SubCategories)
     {
-        if (Model.CurrentCategoryId == 0)
-            return false;
+      if (BreadCrumbContainsCurrentCategoryId(subCategory))
+      {
+        return true;
+      }
+    }
 
-        if (category.Id == Model.CurrentCategoryId)
-            return true;
+    return false;
+  }
 
-        foreach (var subCategory in category.SubCategories)
+
+
+  async Task CategoryLine(CategoryNavigationModel.CategoryLineModel lineModel, int depth = 0)
+  {
+    var active = lineModel.Category.Id == lineModel.CurrentCategoryId ||
+    lineModel.Category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0;
+    var last = lineModel.Category.Id == lineModel.CurrentCategoryId;
+    var liClass = active ? "font-semibold text-violet-600" : "text-gray-400";
+    if (last)
+    {
+      liClass += " last";
+    }
+
+    var paddingStyle = $"pl-{depth * 4}"; // Adjust padding for hierarchy
+
+    <li class="@liClass @paddingStyle text-lg  font-barlow">
+      <a href="@(Url.RouteUrl<Category>(new { SeName = lineModel.Category.SeName }))" class="hover:text-white">
+        @if (last)
         {
-            if (BreadCrumbContainsCurrentCategoryId(subCategory))
+          <span class="text-violet-500 pr-2">•</span> <!-- Marker for selected category -->
+        }
+        else
+        {
+          <span class="text-gray-400 pr-2">•</span> <!-- Marker for selected category -->
+        }
+        @lineModel.Category.Name
+        @if (lineModel.Category.NumberOfProducts.HasValue)
+        {
+          <span class="text-sm text-gray-200">(@lineModel.Category.NumberOfProducts.Value)</span>
+        }
+      </a>
+      @{
+        if (lineModel.Category.SubCategories.Count > 0)
+        {
+          <ul class="ml-8">
+            @foreach (var subCategory in lineModel.Category.SubCategories)
             {
-                return true;
+              var categoryLineModel = new CategoryNavigationModel.CategoryLineModel
+          {
+            CurrentCategoryId = lineModel.CurrentCategoryId,
+            Category = subCategory
+          };
+              await CategoryLine(categoryLineModel, depth + 1); // Increase depth for subcategories
             }
+          </ul>
         }
-
-        return false;
-    }
-
-    async Task CategoryLine(CategoryNavigationModel.CategoryLineModel lineModel)
-    {
-        var active = lineModel.Category.Id == lineModel.CurrentCategoryId ||
-        lineModel.Category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0;
-        var last = lineModel.Category.Id == lineModel.CurrentCategoryId;
-        var liClass = active ? "active" : "inactive";
-        if (last)
-        {
-            liClass += " last";
-        }
-
-        <li class="@liClass">
-            <a href="@(Url.RouteUrl<Category>(new { SeName = lineModel.Category.SeName }))">@lineModel.Category.Name
-                @if (lineModel.Category.NumberOfProducts.HasValue)
-                {
-                    <text> </text>
-
-                    @T("Categories.TotalProducts", lineModel.Category.NumberOfProducts.Value)
-                }
-            </a>
-            @{
-                if (lineModel.Category.Id == lineModel.CurrentCategoryId ||
-                lineModel.Category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0)
-                {
-                    if (lineModel.Category.SubCategories.Count > 0)
-                    {
-                        <ul class="sublist">
-                            @foreach (var subCategory in lineModel.Category.SubCategories)
-                            {
-                                var categoryLineModel = new CategoryNavigationModel.CategoryLineModel
-                        {
-                            CurrentCategoryId = lineModel.CurrentCategoryId,
-                            Category = subCategory
-                        };
-                                await CategoryLine(categoryLineModel);
-                            }
-                        </ul>
-                    }
-                }
-            }
-        </li>
-    }
+      }
+    </li>
+  }
 }
 
 @if (Model.Categories.Count > 0)
 {
-    <div class="block block-category-navigation">
-        <div class="title">
-            <strong>@T("Categories")</strong>
-        </div>
-        <div class="listbox">
-            <ul class="list">
-                @foreach (var category in Model.Categories)
-                {
-                    var categoryLineModel = new CategoryNavigationModel.CategoryLineModel
-                    {
-                        CurrentCategoryId = Model.CurrentCategoryId,
-                        Category = category
-                    };
-                    await CategoryLine(categoryLineModel);
-                }
-            </ul>
-        </div>
+  <div class="block block-category-navigation">
+    <div class="text-2xl font-playfair mb-4">
+      <strong>Categories</strong>
     </div>
+    <div class="listbox">
+      <ul class="list">
+        @foreach (var category in Model.Categories)
+        {
+          var categoryLineModel = new CategoryNavigationModel.CategoryLineModel
+          {
+            CurrentCategoryId = Model.CurrentCategoryId,
+            Category = category
+          };
+          await CategoryLine(categoryLineModel);
+        }
+      </ul>
+    </div>
+  </div>
 }
